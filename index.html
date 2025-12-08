@@ -1,0 +1,524 @@
+<html>
+  <head>
+	  <meta charset="UTF-8">
+	  <title>Advancing Electrolaryngeal Speech Enhancement Through Speech--Text Representation Learning</title>
+  </head>
+  <body>
+	  <article>
+      <header>
+        <h1>Advancing Electrolaryngeal Speech Enhancement Through Speech--Text Representation Learning</h1>
+      </header>
+  	  </article>
+	<div><b>Authors:</b> Ding Ma, Jinyi Mi, Fengji Li, Lester Phillip Violeta, Jiajun He, Wenchin Huang, Kazuhiro Kobayashi, and Tomoki Toda</div>
+	<div><b>Comments:</b> Submitted to IEEE Transactions on Biomedical Engineering (TBME).</div>
+	  
+	<br>
+	<div style="width: 80%">
+		<b>Abstract:</b> <i>Objective:</i> laryngectomees depend on an electromechanical device to generate electrolaryngeal (EL) speech for verbal communication. Compared with normal speech, EL speech suffers from severe distortion, lacks essential phonetic variations, and exhibits significant temporal shifts, degrading naturalness and intelligibility. Although sequence-to-sequence (seq2seq) voice conversion (VC) based EL-speech-to-normal-speech conversion (EL2SP) is promising, substantial mismatches between EL and normal speech inevitably cause cumulative mapping errors that limit performance. To address this, we describe a novel representation learning framework integrating speech and text representations to improve mapping and reconstruction quality within a seq2seq VC model. <i>Methods:</i> our methodology comprises two main stages: 1) representation integration and learning, and 2) reconstruction training. A network capable of incorporating auxiliary text information is first constructed with essential pretrained modules to build richer intermediate representations. Then, an autoencoder-style reconstruction strategy finalizes EL2SP model to inherit integrated representations without increasing model complexity. Systematic optimization designs are further performed across these stages. Specifically, we introduce three fusion strategies including middle-, input-, and hybrid-level fusion strategies that progressively enhance learning. Moreover, besides standard seq2seq VC objectives, an additional reconstruction loss on the integrated representation is introduced to refine representation transfer. <i>Results:</i> experiments under different EL2SP datasets consistently demonstrate that our methods, combined with data augmentations, dramatically outperform baselines relying solely on speech representations regarding both conversion quality and intelligibility. Furthermore, progressive improvements with system design depth validates the effectiveness of our methods. <i>Significance:</i> the proposed methods open extensible and practical methodology for EL speech enhancement and assistive communication technologies.
+	</div>
+	
+	<br>
+    <div>
+      	<h2>Main concept</h2>
+      	<img src="samples/methods.png" style="width: 45%;"/>
+    </div>
+    <div style="width: 80%">
+      <h2>Dataset</h2>
+      <strong>Patient-1</strong> and <strong>Patient-2</strong> datasets were used to evaluate proposed methods for EL2SP.</h2>
+    </div>
+  
+    <div style="width: 80%">
+      <h2>Systems</h2>
+      <ul>
+        <li><strong>EL speech, Normal speech</strong>: Original source EL and target normal speech as the reference.</li>
+        <li><strong>Baseline 1</strong>: The Transformer-based model first conducted pretraining then directly fine-tuned with the original EL2SP datasets.</li>
+        <li><strong>Baseline 2</strong>: The Transformer-based model first conducted pretraining then conducted two-stage fine-tuning with the synthetic data and original EL2SP datasets.</li>
+		    <li><strong>P-MF-2</strong>: The proposed speech--text representation learning method using middle-level fusion strategy and trained with the synthetic data, original EL2SP dataset, and text data.</li>
+		    <li><strong>P-IF-2</strong>: The proposed speech--text representation learning method using input-level fusion strategy and trained with the synthetic data, original EL2SP dataset, and text data.</li>
+        <li><strong>P-HF-2</strong>: The proposed speech--text representation learning method using hybrid-level fusion strategy and trained with the synthetic data, original EL2SP dataset, and text data.</li>
+      </ul>
+    </div>
+	
+	<br>	  
+    <div style="width: 80%">
+		<h2>Conversion Samples on Patient-1</h2>
+		
+        <!-- sample 1 -->
+        <h3 class="transcript">Transcription: 違うバスに乗ってしまったようです。 (chi ga u ba su ni notte shi matta you de su。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case1/el/1.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case1/normal/1.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <td>
+                <audio controls><source src="samples/case1/b_1/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/b_2/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-mf-2/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-if-2/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-hf-2/1.wav"></audio>
+              </td>
+            </tr>
+        </table>
+		
+        <!-- sample 2 -->
+        <h3 class="transcript">Transcription: 卵と牛乳がダメです。 (ta ma go to gyuunyuu ga da me de su。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case1/el/2.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case1/normal/2.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case1/b_1/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/b_2/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-mf-2/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-if-2/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-hf-2/2.wav"></audio>
+              </td>
+            </tr>
+        </table>
+		
+        <!-- sample 3 -->
+        <h3 class="transcript">Transcription: ご苦労様でした。 (go ku rou sa ma de shi ta。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case1/el/3.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case1/normal/3.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case1/b_1/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/b_2/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-mf-2/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-if-2/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-hf-2/3.wav"></audio>
+              </td>
+            </tr>
+        </table>
+
+        <!-- sample 4 -->
+        <h3 class="transcript">Transcription: 申し訳ありません。 (mou shi wa ke a ri ma sen。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case1/el/4.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case1/normal/4.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case1/b_1/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/b_2/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-mf-2/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-if-2/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-hf-2/4.wav"></audio>
+              </td>
+            </tr>
+        </table>
+
+                <!-- sample 5 -->
+        <h3 class="transcript">Transcription: 着陸にも若干の影響が出そうです。　 (cha ku ri ku ni mo jakkan no eikyou ga de sou de su。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case1/el/5.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case1/normal/5.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case1/b_1/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/b_2/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-mf-2/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-if-2/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case1/p-hf-2/5.wav"></audio>
+              </td>
+            </tr>
+        </table>
+
+	  <br>
+      <div style="width: 80%">
+		<h2>Conversion Samples on Patient-2</h2>
+		
+        <!-- sample 1 -->
+        <h3 class="transcript">Transcription: 心配なら、ロープウェーもありますよ。 (shinpai na ra, roopuwee mo a ri ma su yo。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case2/el/1.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case2/normal/1.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <td>
+                <audio controls><source src="samples/case2/b_1/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/b_2/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-mf-2/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-if-2/1.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-hf-2/1.wav"></audio>
+              </td>
+            </tr>
+        </table>
+		
+        <!-- sample 2 -->
+        <h3 class="transcript">Transcription: ンゴニは、素朴な弦楽器である。(ngo ni wa, soboku na gengakki de a ru。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case2/el/2.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case2/normal/2.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case2/b_1/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/b_2/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-mf-2/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-if-2/2.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-hf-2/2.wav"></audio>
+              </td>
+            </tr>
+        </table>
+		
+        <!-- sample 3 -->
+        <h3 class="transcript">Transcription: ロープウェーで上りおりできます。 (roopuwee de noboriori de ki ma su。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case2/el/3.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case2/normal/3.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case2/b_1/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/b_2/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-mf-2/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-if-2/3.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-hf-2/3.wav"></audio>
+              </td>
+            </tr>
+        </table>
+
+        <!-- sample 4 -->
+        <h3 class="transcript">Transcription: カープールレーンは渋滞しません。 (kaapuru reen wa juutai shi ma sen。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case2/el/4.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case2/normal/4.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case2/b_1/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/b_2/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-mf-2/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-if-2/4.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-hf-2/4.wav"></audio>
+              </td>
+            </tr>
+        </table>
+
+                <!-- sample 5 -->
+        <h3 class="transcript">Transcription: プロパンガスとトイレットペーパーが含まれます。　 (propangasu to toiretto peepaa ga fuku ma re ma su。)</h3>
+		<br>
+		<table>
+			<tr>
+			  <th>EL speech</th><th>Normal speech</th>
+			</tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Reference:</th>
+		    </tr>
+		    <tr style="border-top: solid; border-bottom: solid;">
+		      <td>
+		        <audio controls><source src="samples/case2/el/5.wav"></audio>
+		      </td>
+		      <td>
+		        <audio controls><source src="samples/case2/normal/5.wav"></audio>
+		      </td>
+		    </tr>
+		</table>
+		
+        <br>
+        <table>
+            <tr style="border-top: solid; border-bottom: solid;">
+              <th>Baseline 1</th><th>Baseline 2</th><th>P-MF-2</th><th>P-IF-2</th><th>P-HF-2</th>
+            </tr>
+		    <tr>
+		      <th style="text-align: left;" colspan="2">Conversion:</th>
+		    </tr>
+            <tr style="border-top: solid; border-bottom: solid;">
+             <td>
+                <audio controls><source src="samples/case2/b_1/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/b_2/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-mf-2/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-if-2/5.wav"></audio>
+              </td>
+              <td>
+                <audio controls><source src="samples/case2/p-hf-2/5.wav"></audio>
+              </td>
+            </tr>
+        </table>
+		
+      </div>
+
+  <br>
+  </body>
+</html>
